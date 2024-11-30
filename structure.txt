@@ -47,3 +47,15 @@ DoodleDo/
 │   └── package.json           # Зависимости frontend
 │
 └── README.md                  # Описание проекта
+
+
+Response 
+{
+  "message": "Category updated successfully"
+}
+
+
+Filter & Sort:
+GET /api/tasks?deadlineBefore=YYYY-MM-DD – Filter tasks by deadlines before a date.
+GET /api/tasks?deadlineAfter=YYYY-MM-DD – Filter tasks by deadlines after a date.
+GET /api/tasks?sortBy=deadline&order=asc|desc – Sort tasks by deadline in ascending or descending order.
