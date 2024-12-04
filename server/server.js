@@ -9,6 +9,7 @@ import projectRouter from "./routes/projectRoute.js"
 import taskRouter from "./routes/taskRoute.js";
 import labelRouter from "./routes/labelRoute.js";
 import userRouter from "./routes/userRoute.js";
+import commentRouter from "./routes/commentRoute.js"
 
 dotenv.config();
 const PORT = process.env.PORT
@@ -45,6 +46,7 @@ app.use('/api/categories', categoryRouter)
 app.use('/api/projects', projectRouter)
 app.use('/api/tasks', taskRouter)
 app.use('/api/labels', labelRouter)
+app.use('/api/comments', commentRouter)
 
 
 app.use(errorHandlerMid)//????

@@ -11,19 +11,13 @@ const projectSchema = new mongoose.Schema({
     },
     userId: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: "User"
+        ref: "User",
+        required: [true, "Please add userId"]
     },
     categoryId: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: "Category"
-    },
-    taskId: {
-        type: [ mongoose.SchemaTypes.ObjectId ],
-        ref: "Task"
-    },
-    labelId: {
-        type: [ mongoose.SchemaTypes.ObjectId ],
-        ref: "Label"
+        ref: "Category",
+        required: [true, "Please add categoryId"]
     },
     isCompleted: {
         type: Boolean,
@@ -36,12 +30,27 @@ const projectSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
-    files: {
+    filesAndImages: {
         type: [ String ],
     },
-    images: {
-        type: [ String ],
-    }
-}, {timestamps: true})
+}, {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+})
+
+projectSchema.virtual('tasks', {
+    ref: "Task",
+    localField: "_id",
+    foreignField: "projectId",
+    justOne: false
+});
+
+projectSchema.virtual('labels', {
+    ref: "Label",
+    localField: "_id",
+    foreignField: "projectId",
+    justOne: false
+});
 
 export default mongoose.model("Project", projectSchema)

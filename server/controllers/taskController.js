@@ -1,10 +1,15 @@
-import taskModel from '../models/taskModel.js'
+import TaskModel from '../models/taskModel.js'
 import errorHandler from '../config/errorHandler.js'
 
 async function createTask(req, res){
     try {
-        res.status(200).json("createTask")        
-        console.log("createTask");  
+        const taskData = req.body
+        if(!taskData) return errorHandler(res, 400, "Invalid data")
+        const newTask = await TaskModel.create(taskData)
+        res.status(201).json({
+            message: "New task successfully created",
+            newTask: newTask,
+        })  
     } catch (error) {
         errorHandler(res, 400, "Failed to create task")
     }
@@ -12,8 +17,14 @@ async function createTask(req, res){
 
 async function updateTask(req, res){
     try {
-        res.status(200).json("updateTask")        
-        console.log("updateTask");  
+        const taskId = req.params.id
+        if(!taskId) return errorHandler(res, 400, "Invalid ID")
+        const newData = req.body
+        if(!newData) return errorHandler(res, 400, "Invalid data format")
+        const updatedTask = await TaskModel.findByIdAndUpdate(taskId, newData)    
+        res.status(200).json({
+            message: `Task with ID: ${taskId} successfully updated.`, 
+            task: updatedTask}) 
     } catch (error) {
         errorHandler(res, 500, "Failed to update task")
     }
@@ -21,8 +32,11 @@ async function updateTask(req, res){
 
 async function deleteTask(req, res){
     try {
-        res.status(200).json("deleteTask")        
-        console.log("deleteTask");  
+        const taskId = req.params.id
+        if(!taskId) return errorHandler(res, 400, "Invalid ID")
+        await TaskModel.findByIdAndDelete(taskId)    
+        res.status(200).json({
+            message: `Task with ID: ${taskId} successfully deleted.`})   
     } catch (error) {
         errorHandler(res, 400, "Failed to delete task")
     }
@@ -30,11 +44,9 @@ async function deleteTask(req, res){
 
 async function getAllTasks(req, res){
     try {
-        console.log("getAllTasks");
-        res.status(200).json("getAllTasks")        
-        // const tasks = await TaskModel.find()
-        // if(!tasks.length) return errorHandler(res, 404, "Tasks not found" )
-        // res.status(200).json(tasks)        
+        const tasks = await TaskModel.find()
+        if(!tasks.length) return errorHandler(res, 404, "Tasks not found" )
+        res.status(200).json(tasks)        
     } catch (error) {
         errorHandler(res, 500, "Failed to fetch tasks")
     }
@@ -42,8 +54,10 @@ async function getAllTasks(req, res){
 
 async function getTaskInfo(req, res){
     try {
-        res.status(200).json("getTaskInfo: Fetching basic task info")        
-        console.log("getTaskInfo: Fetching basic task info");  
+        const taskId = req.params.id
+        if(!taskId) return errorHandler(res, 400, "Invalid ID")
+        const task = await TaskModel.findById(taskId)
+        res.status(200).json(task)   
     } catch (error) {
         errorHandler(res, 500, "Failed to fetch task")
     }

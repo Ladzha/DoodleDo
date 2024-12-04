@@ -9,13 +9,10 @@ const taskSchema = new mongoose.Schema({
     description: {
         type: String,
     },
-    comments: {
-        type: [mongoose.SchemaTypes.ObjectId],
-        ref: "Comment"
-    },
     userId: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: "User"
+        ref: "User",
+        required: [true, "Please add userId"]
     },
     categoryId: {
         type: mongoose.SchemaTypes.ObjectId,
@@ -24,10 +21,6 @@ const taskSchema = new mongoose.Schema({
     projectId: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: "Project"
-    },
-    labelIds: {
-        type: [ mongoose.SchemaTypes.ObjectId ],
-        ref: "Label"
     },
     isCompleted: {
         type: Boolean,
@@ -40,12 +33,28 @@ const taskSchema = new mongoose.Schema({
         type: Date,
         default: null
     },
-    files: {
+    filesAndImages: {
         type: [ String ],
     },
-    images: {
-        type: [ String ],
-    }
-}, {timestamps: true})
+}, {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
+})
+
+
+taskSchema.virtual('comments', {
+    ref: "Comment",
+    localField: "_id",
+    foreignField: "taskId",
+    justOne: false
+});
+
+taskSchema.virtual('labels', {
+    ref: "Label",
+    localField: "_id",
+    foreignField: "taskId",
+    justOne: false
+});
 
 export default mongoose.model("Task", taskSchema)

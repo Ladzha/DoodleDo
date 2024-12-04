@@ -3,8 +3,13 @@ import errorHandler from '../config/errorHandler.js'
 
 async function createLabel(req, res){
     try {
-        res.status(200).json("createLabel")        
-        console.log("createLabel");  
+        const labelData = req.body
+        if(!labelData) return errorHandler(res, 400, "Invalid data")
+        const newLabel = await LabelModel.create(labelData)
+        res.status(201).json({
+            message: "New label successfully created",
+            newLabel: newLabel,
+        })  
     } catch (error) {
         errorHandler(res, 400, "Failed to create label")
     }
@@ -12,8 +17,14 @@ async function createLabel(req, res){
 
 async function updateLabel(req, res){
     try {
-        res.status(200).json("updateLabel")        
-        console.log("updateLabel");  
+        const labelId = req.params.id
+        if(!labelId) return errorHandler(res, 400, "Invalid ID")
+        const newData = req.body
+        if(!newData) return errorHandler(res, 400, "Invalid data format")
+        const updatedLabel = await LabelModel.findByIdAndUpdate(labelId, newData)    
+        res.status(200).json({
+            message: `Label with ID: ${labelId} successfully updated.`, 
+            label: updatedLabel})  
     } catch (error) {
         errorHandler(res, 500, "Failed to update label")
     }
@@ -21,8 +32,11 @@ async function updateLabel(req, res){
 
 async function deleteLabel(req, res){
     try {
-        res.status(200).json("deleteLabel")        
-        console.log("deleteLabel");  
+        const labelId = req.params.id
+        if(!labelId) return errorHandler(res, 400, "Invalid ID")
+        await LabelModel.findByIdAndDelete(labelId)    
+        res.status(200).json({
+            message: `Label with ID: ${labelId} successfully deleted.`}) 
     } catch (error) {
         errorHandler(res, 400, "Failed to delete label")
     }
@@ -30,8 +44,9 @@ async function deleteLabel(req, res){
 
 async function getAllLabels(req, res){
     try {
-        console.log("getAllLabels");
-        res.status(200).json("getAllLabels")           
+        const labels = await LabelModel.find()
+        if(!labels.length) return errorHandler(res, 404, "Labels not found" )
+        res.status(200).json(labels)            
     } catch (error) {
         errorHandler(res, 500, "Failed to fetch labels")
     }

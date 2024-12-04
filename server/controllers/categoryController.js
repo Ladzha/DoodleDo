@@ -44,7 +44,26 @@ async function deleteCategory(req, res){
 
 async function getAllCategories(req, res){
     try {       
-        const categories = await CategoryModel.find()
+        const categories = await CategoryModel.find().populate({
+            path: 'projects',
+            populate: {
+                path: 'tasks',
+                populate:{
+                    path: "labels"
+                },
+                populate: {
+                    path: "comments"
+                }
+            }
+        }).populate({
+            path: 'tasks',
+                populate:{
+                    path: "labels"
+                },
+                populate: {
+                    path: "comments"
+                }
+        })
         if(!categories.length) return errorHandler(res, 404, "Categories not found" )
         res.status(200).json(categories)        
     } catch (error) {

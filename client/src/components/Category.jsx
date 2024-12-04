@@ -1,8 +1,6 @@
-import React from 'react'
-
-const Category = () => {
+const Category = ({name}) => {
   return (
-    <div>Category</div>
+    <div className='categoryName'>{name}</div>
   )
 }
 

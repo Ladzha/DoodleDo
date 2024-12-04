@@ -12,6 +12,7 @@ const categorySchema = new mongoose.Schema({
         minLength: 1,
     },
 },{
+    timestamps: false,
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
 })
@@ -26,7 +27,7 @@ categorySchema.virtual('projects', {
 categorySchema.virtual('tasks', {
     ref: "Task",
     localField: "_id",
-    foreignField: "taskId",
+    foreignField: "categoryId",
     justOne: false
 });
 

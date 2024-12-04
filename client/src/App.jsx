@@ -1,24 +1,27 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import './App.css';
-import Home from './pages/Home';
+import {Routes, Route} from'react-router';
+import AuthPage from './pages/AuthPage';
+import WelcomePage from './pages/WelcomePage';
+import Profile from './pages/Profile';
 import Dashboard from './pages/Dashboard';
+import Error from './components/error/Error';
+import './App.css';
+import Layout from './components/Layout';
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <div className='wrapper'>
-        <Home/>
-        <Dashboard/>
+    <>
+      <Routes>
+        <Route path='/' element = {<Layout/>}>
+          <Route index element = {<WelcomePage/>}/>
+          <Route path = 'auth' element = {<AuthPage/>}/>
+          <Route path = 'profile' element = {<Profile/>}/>
+          <Route path = 'dashboard' element = {<Dashboard/>}/>
+          <Route path = '*' element = {<Error/>}/>
+        </Route>
+      </Routes>
+    </>
 
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-      </div>
-
-    </div>
   )
 }
 

@@ -1,10 +1,15 @@
-import projectModel from "../models/projectModel.js"
+import ProjectModel from "../models/projectModel.js"
 import errorHandler from '../config/errorHandler.js'
 
 async function createProject(req, res){
     try {
-        res.status(200).json("createProject")        
-        console.log("createProject");  
+        const projectData = req.body
+        if(!projectData) return errorHandler(res, 400, "Invalid data")
+        const newProject = await ProjectModel.create(projectData)
+        res.status(201).json({
+            message: "New project successfully created",
+            newProject: newProject,
+        }) 
     } catch (error) {
         errorHandler(res, 400, "Failed to create project")
     }
@@ -12,8 +17,14 @@ async function createProject(req, res){
 
 async function updateProject(req, res){
     try {
-        res.status(200).json("updateProject")        
-        console.log("updateProject");  
+        const projectId = req.params.id
+        if(!projectId) return errorHandler(res, 400, "Invalid ID")
+        const newData = req.body
+        if(!newData) return errorHandler(res, 400, "Invalid data format")
+        const updatedProject = await ProjectModel.findByIdAndUpdate(projectId, newData)    
+        res.status(200).json({
+            message: `Project with ID: ${projectId} successfully updated.`, 
+            project: updatedProject}) 
     } catch (error) {
         errorHandler(res, 500, "Failed to update project")
     }
@@ -21,8 +32,11 @@ async function updateProject(req, res){
 
 async function deleteProject(req, res){
     try {
-        res.status(200).json("deleteProject")        
-        console.log("deleteProject");  
+        const projectId = req.params.id
+        if(!projectId) return errorHandler(res, 400, "Invalid ID")
+        await ProjectModel.findByIdAndDelete(projectId)    
+        res.status(200).json({
+            message: `Project with ID: ${projectId} successfully deleted.`})  
     } catch (error) {
         errorHandler(res, 400, "Failed to delete project")
     }
@@ -30,11 +44,9 @@ async function deleteProject(req, res){
 
 async function getAllProjects(req, res){
     try {
-        console.log("getAllProjects");
-        res.status(200).json("getAllProjects")        
-        // const projects = await ProjectModel.find()
-        // if(!projects.length) return errorHandler(res, 404, "Projects not found" )
-        // res.status(200).json(projects)        
+        const projects = await ProjectModel.find()
+        if(!projects.length) return errorHandler(res, 404, "Projects not found" )
+        res.status(200).json(projects)         
     } catch (error) {
         errorHandler(res, 500, "Failed to fetch projects")
     }
@@ -42,8 +54,10 @@ async function getAllProjects(req, res){
 
 async function getProjectInfo(req, res){
     try {
-        res.status(200).json("getProjectInfo: Fetching basic project info")        
-        console.log("getProjectInfo: Fetching basic project info");  
+        const projectId = req.params.id
+        if(!projectId) return errorHandler(res, 400, "Invalid ID")
+        const project = await ProjectModel.findById(projectId)
+        res.status(200).json(project) 
     } catch (error) {
         errorHandler(res, 500, "Failed to fetch project")
     }
@@ -51,8 +65,10 @@ async function getProjectInfo(req, res){
 
 async function getProjectWithContent(req, res){
     try {
-        res.status(200).json("getProjectWithContent: Fetching project info with content info")        
-        console.log("getProjectWithContent: Fetching project info with content info");  
+        const projectId = req.params.id
+        if(!projectId) return errorHandler(res, 400, "Invalid ID")
+        const project = await ProjectModel.findById(projectId).populate("projectId")
+        res.status(200).json(project) 
     } catch (error) {
         errorHandler(res, 500, "Failed to fetch project")
     }
