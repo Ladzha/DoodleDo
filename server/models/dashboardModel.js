@@ -6,10 +6,9 @@ const dashboardSchema = new mongoose.Schema({
         ref: "User", 
         required: [true, "Please add user ID"]
     },
-    categoryId: {
+    categories: {
         type: [ mongoose.SchemaTypes.ObjectId ],
         ref: "Category", 
-        // required: [true, "Please add category ID"]
     },
 })
 

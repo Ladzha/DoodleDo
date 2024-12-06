@@ -1,15 +1,15 @@
 import mongoose from "mongoose";
 
 const categorySchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.SchemaTypes.ObjectId,
-        ref: "User",
-        required: [true, "Please add userId"],
-    },
     name: {
         type: String,
         required: [true, "Please add a category name"],
         minLength: 1,
+    },
+    dashboardId: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Dashboard",
+        required: [true, "Please add dashboardId"],
     },
 },{
     timestamps: false,
@@ -30,5 +30,6 @@ categorySchema.virtual('tasks', {
     foreignField: "categoryId",
     justOne: false
 });
+
 
 export default mongoose.model("Category", categorySchema)

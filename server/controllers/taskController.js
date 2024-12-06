@@ -44,7 +44,7 @@ async function deleteTask(req, res){
 
 async function getAllTasks(req, res){
     try {
-        const tasks = await TaskModel.find()
+        const tasks = await TaskModel.find().populate('labels')
         if(!tasks.length) return errorHandler(res, 404, "Tasks not found" )
         res.status(200).json(tasks)        
     } catch (error) {
@@ -56,7 +56,7 @@ async function getTaskInfo(req, res){
     try {
         const taskId = req.params.id
         if(!taskId) return errorHandler(res, 400, "Invalid ID")
-        const task = await TaskModel.findById(taskId)
+        const task = await TaskModel.findById(taskId).populate('labels')
         res.status(200).json(task)   
     } catch (error) {
         errorHandler(res, 500, "Failed to fetch task")

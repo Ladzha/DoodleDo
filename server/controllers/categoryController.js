@@ -4,7 +4,9 @@ import errorHandler from '../config/errorHandler.js'
 async function createCategory(req, res){
     try {
         const categoryData = req.body
-        if(!categoryData) return errorHandler(res, 400, "Invalid data")
+        if (!req.body.name || !req.body.dashboardId) {
+            return errorHandler(res, 400, "Missing required fields");
+        }
         const newCategory = await CategoryModel.create(categoryData)
         res.status(201).json({
             message: "New category successfully created",
@@ -44,26 +46,18 @@ async function deleteCategory(req, res){
 
 async function getAllCategories(req, res){
     try {       
-        const categories = await CategoryModel.find().populate({
-            path: 'projects',
-            populate: {
+        const categories = await CategoryModel.find()
+        .populate([{
+                path: 'projects',
+                populate: {
+                    path: 'tasks',
+                    populate: {
+                        path: "labels"
+                }}},{
                 path: 'tasks',
-                populate:{
-                    path: "labels"
-                },
                 populate: {
-                    path: "comments"
-                }
-            }
-        }).populate({
-            path: 'tasks',
-                populate:{
                     path: "labels"
-                },
-                populate: {
-                    path: "comments"
-                }
-        })
+                }}])
         if(!categories.length) return errorHandler(res, 404, "Categories not found" )
         res.status(200).json(categories)        
     } catch (error) {
@@ -76,21 +70,22 @@ async function getCategoryInfo(req, res){
         const categoryId = req.params.id
         if(!categoryId) return errorHandler(res, 400, "Invalid ID")
         const category = await CategoryModel.findById(categoryId)
+            .populate([{
+                path: 'projects',
+                populate: {
+                    path: 'tasks',
+                    populate: {
+                        path: "labels"
+                }}},{
+                path: 'tasks',
+                populate: {
+                    path: "labels"
+                }}])
         res.status(200).json(category) 
     } catch (error) {
         errorHandler(res, 500, "Failed to fetch category")
     }
 }
 
-async function getCategoryWithContent(req, res){
-    try {
-        const categoryId = req.params.id
-        if(!categoryId) return errorHandler(res, 400, "Invalid ID")
-        const category = await CategoryModel.findById(categoryId).populate("projectId")
-        res.status(200).json(category)
-    } catch (error) {
-        errorHandler(res, 500, "Failed to fetch category")
-    }
-}
 
-export default {createCategory, updateCategory, deleteCategory, getAllCategories, getCategoryInfo, getCategoryWithContent}
+export default {createCategory, updateCategory, deleteCategory, getAllCategories, getCategoryInfo}

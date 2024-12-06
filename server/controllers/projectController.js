@@ -4,6 +4,9 @@ import errorHandler from '../config/errorHandler.js'
 async function createProject(req, res){
     try {
         const projectData = req.body
+        if (!req.body.name || !req.body.dashboardId || !req.body.categoryId) {
+            return errorHandler(res, 400, "Missing required fields");
+        }
         if(!projectData) return errorHandler(res, 400, "Invalid data")
         const newProject = await ProjectModel.create(projectData)
         res.status(201).json({
@@ -45,6 +48,12 @@ async function deleteProject(req, res){
 async function getAllProjects(req, res){
     try {
         const projects = await ProjectModel.find()
+        .populate({
+            path: 'tasks',
+                populate:{
+                    path: "labels"
+                },
+        })
         if(!projects.length) return errorHandler(res, 404, "Projects not found" )
         res.status(200).json(projects)         
     } catch (error) {
@@ -57,6 +66,12 @@ async function getProjectInfo(req, res){
         const projectId = req.params.id
         if(!projectId) return errorHandler(res, 400, "Invalid ID")
         const project = await ProjectModel.findById(projectId)
+            .populate({
+                path: 'tasks',
+                    populate:{
+                        path: "labels"
+                    },
+            })
         res.status(200).json(project) 
     } catch (error) {
         errorHandler(res, 500, "Failed to fetch project")

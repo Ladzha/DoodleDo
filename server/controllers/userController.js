@@ -1,17 +1,32 @@
 import { validationResult } from "express-validator";
 import dotenv from "dotenv";
 import bcrypt from "bcrypt";
+import fs from "fs/promises";
 import authentication from "./authentication.js";
 import errorHandler from '../config/errorHandler.js';
-import UserModel from '../models/userModel.js';
+import UserModel from '../models/userModel.js'; 
+import DashboardModel from "../models/dashboardModel.js";
+import CategoryModel from "../models/categoryModel.js";
+import ProjectModel from "../models/projectModel.js";
+import TaskModel from "../models/taskModel.js";
+import LabelModel from "../models/labelModel.js";
+import dashboardController from '../controllers/dashboardController.js';
+
 
 dotenv.config()
 const SECRET_KEY = process.env.SECRET_KEY
 const { generateAccessToken, generateRefreshToken, authenticationToken, refreshAccessToken} = authentication
+const {getDashboard, createDashboard, deleteDashboard } = dashboardController
 
 async function getAllUsers(req, res){
     try {     
         const users = await UserModel.find()
+        .populate({ 
+            path: 'dashboard', 
+            populate: {
+                path: 'categories', 
+            }
+        });
         if(!users.length) return errorHandler(res, 404, "Users not found" )
         res.status(200).json(users)        
     } catch (error) {
@@ -23,7 +38,28 @@ async function getUserInfo(req, res){
     try {
         const userId = req.params.id
         if(!userId) return errorHandler(res, 400, "Invalid ID")
-        const user = await UserModel.findById(userId)
+        const user = await UserModel.findById(userId).populate({ 
+            path: 'dashboard',
+            populate: {
+                path: 'categories',
+                populate: {
+                    path: 'projects',
+                    populate: {
+                        path: 'tasks',
+                        populate: {
+                            path: 'labels'
+                        }
+                    }
+                },
+                populate: {
+                    path: 'tasks',
+                    populate: {
+                        path: 'labels'
+                    }
+                },
+            },
+        })
+        if (!user) return errorHandler(res, 404, "User not found");
         res.status(200).json(user)        
     } catch (error) {
         errorHandler(res, 500, "Failed to fetch user")
@@ -52,12 +88,20 @@ async function createUser(req, res){
         const saltRounds = 5;
         const hashPassword = bcrypt.hashSync(password, saltRounds)
         const newUser = await UserModel.create({username, email, password: hashPassword})
-        const accessToken = generateAccessToken(newUser._id, newUser.email)
+        
+        //creating dashboard with template data
+        const template = JSON.parse(
+            await fs.readFile('./data/defaultData.json')
+        );      
+
+        const newDashboard = await createDashboard(newUser._id, template)
+        newUser.dashboard = newDashboard
+        await newUser.save()
 
         res.status(201).json({
             message: "New user successfully created",
             newUser: newUser,
-            accessToken: accessToken
+            newDashboard: newDashboard
         }) 
     } catch (error) {
         errorHandler(res, 400, "Failed to create user")
@@ -83,10 +127,22 @@ async function deleteUser(req, res){
     try {
         const userId = req.params.id
         if(!userId) return errorHandler(res, 400, "Invalid ID")
+        const userDashboard = await DashboardModel.findOne({ userId });
+
+        if (userDashboard) {
+            await LabelModel.deleteMany({ dashboardId: userDashboard._id });
+            await TaskModel.deleteMany({ dashboardId: userDashboard._id });
+            await ProjectModel.deleteMany({ dashboardId: userDashboard._id });
+            await CategoryModel.deleteMany({ dashboardId: userDashboard._id });
+            await DashboardModel.deleteOne({ _id: userDashboard._id });
+        }
+
         await UserModel.findOneAndDelete(userId)
+
         res.status(200).json({
-            message: `User with ID: ${userId} successfully deleted.`})  
+            message: `User with ID: ${userId} and related data successfully deleted.`})  
     } catch (error) {
+        console.error("Error deleting user:", error);
         errorHandler(res, 400, "Failed to delete user")
     }
 }
@@ -104,10 +160,11 @@ async function login(req, res){
         console.log("validPassword =>", validPassword);
         if(!validPassword) return errorHandler(res, 400, "Incorrect password")
         const accessToken = generateAccessToken(userCandidate._id, userCandidate.email)
+    
         res.status(200).json({
             message: `Welcome ${userCandidate.username}`,
-            accessToken: accessToken
-            // refreshToken: refreshToken
+            accessToken: accessToken,
+            refreshToken: refreshToken
         })        
     } catch (error) {
         errorHandler(res, 500, "Failed to login")

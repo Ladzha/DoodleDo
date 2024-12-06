@@ -1,5 +1,5 @@
 import { Link } from'react-router';
-import Button from '../components/element/Button';
+import Button from './element/Button';
 
 const Profile = () => {
 

@@ -4,15 +4,17 @@ const projectSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        minlength: 1,
+        minlength: [3, "Project name should be more than 3 symbols"],
+        maxLength: [50, "Project name should be less than 50 symbols"]
     },
     description: {
         type: String,
+        minlength: [3, "Project description should be more than 3 symbols"],
     },
-    userId: {
+    dashboardId: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: "User",
-        required: [true, "Please add userId"]
+        ref: "Dashboard",
+        required: [true, "Please add dashboardId"]
     },
     categoryId: {
         type: mongoose.SchemaTypes.ObjectId,
@@ -21,6 +23,7 @@ const projectSchema = new mongoose.Schema({
     },
     isCompleted: {
         type: Boolean,
+        default: false
     },
     completedAt: {
         type: Date,

@@ -4,15 +4,17 @@ const taskSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
-        minlength: 1,
+        minlength: [3, "Project name should be more than 3 symbols"],
+        maxLength: [50, "Project name should be less than 50 symbols"]
     },
-    description: {
+    comment: {
         type: String,
+        minlength: [2, "Project name should be more than 2 symbols"],
     },
-    userId: {
+    dashboardId: {
         type: mongoose.SchemaTypes.ObjectId,
-        ref: "User",
-        required: [true, "Please add userId"]
+        ref: "Dashboard",
+        required: [true, "Please add dashboardId"]
     },
     categoryId: {
         type: mongoose.SchemaTypes.ObjectId,
@@ -24,6 +26,7 @@ const taskSchema = new mongoose.Schema({
     },
     isCompleted: {
         type: Boolean,
+        default: false
     },
     completedAt: {
         type: Date,
@@ -41,14 +44,6 @@ const taskSchema = new mongoose.Schema({
     toJSON: { virtuals: true },
     toObject: { virtuals: true }
 })
-
-
-taskSchema.virtual('comments', {
-    ref: "Comment",
-    localField: "_id",
-    foreignField: "taskId",
-    justOne: false
-});
 
 taskSchema.virtual('labels', {
     ref: "Label",

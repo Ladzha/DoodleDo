@@ -1,0 +1,90 @@
+{
+  "categories": [
+    {
+      "name": "Inbox",
+      "tasks": [
+        {
+          "name": "Read an article",
+          "deadline": "2024-12-08",
+          "labels": [{"name": "Self Development"}, {"name": "Fun"}],
+          "comment": "Made some notes"
+        },
+        {
+          "name": "Clean desktop",
+          "deadline": "2024-12-10"
+        }
+      ]
+    },
+    {
+      "name": "Work",
+      "projects": [
+        {
+          "name": "Team project launch",
+          "description": "Prepare for the launch of the new team project.",
+          "deadline": "2024-12-15",
+          "tasks": [
+            {
+              "name": "Prepare presentation",
+              "deadline": "2024-12-12",
+              "labels": [{"name": "Urgent"}, {"name": "This week"}],
+              "comment": "Use the latest statistics."
+            },
+            {
+              "name": "Conduct training",
+              "deadline": "2024-12-14",
+              "labels": [{"name": "This week"}]
+            }
+          ]
+        },
+        {
+          "name": "Client communication",
+          "description": "Plan and execute client communication tasks.",
+          "deadline": "2024-12-20",
+          "tasks": [
+            {
+              "_id": "TASK_ID_FOLLOW_UP_EMAILS",
+              "name": "Send follow-up emails",
+              "deadline": "2024-12-16",
+              "labels": [{"name": "This week"}]
+            },
+            {
+              "name": "Organize meeting",
+              "deadline": "2024-12-18",
+              "comment": "Confirm availability beforehand."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Daily Routine",
+      "projects": [
+        {
+          "name": "Morning habits",
+          "description": "Establish a productive morning routine.",
+          "deadline": "2024-12-30",
+          "tasks": [
+            {
+              "name": "Meditation",
+              "description": "Spend 10 minutes meditating every morning.",
+              "deadline": "2024-12-15",
+              "labels": [{"name": "With pleasure"}, {"name": "Daily"}],
+              "comment": "Use a meditation app for guidance."
+            }
+          ]
+        }
+      ],
+      "tasks": [
+        {
+          "name": "Evening reading",
+          "deadline": "2024-12-09",
+          "labels": [{"name": "With pleasure"}]
+        },
+        {
+          "name": "Plan next day",
+          "deadline": "2024-12-10"
+        }
+      ]
+    }
+  ]
+}

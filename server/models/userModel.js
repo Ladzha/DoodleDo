@@ -17,7 +17,11 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, 'Please add a password'],
+    },
+    dashboard: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Dashboard"
     }
-})
+},  {timestamps: true})
 
 export default mongoose.model("User", userSchema)

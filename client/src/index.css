@@ -26,6 +26,17 @@ input {
   font: inherit; 
 }
 
+ul {
+  list-style: none; 
+  margin: 0; 
+  padding: 0;
+}
+
+li {
+  margin: 0; 
+  padding: 0; 
+}
+
 body {
   margin: 0;
   display: flex;

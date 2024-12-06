@@ -5,6 +5,10 @@ const labelSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    dashboardId: {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Dashboard"
+    },
     projectId: {
         type: mongoose.SchemaTypes.ObjectId,
         ref: "Project"
