@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import errorHandler from "../config/errorHandler.js";
 import DashboardModel from "../models/dashboardModel.js";
 import CategoryModel from "../models/categoryModel.js";

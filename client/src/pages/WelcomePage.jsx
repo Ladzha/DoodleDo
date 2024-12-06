@@ -8,7 +8,7 @@ const WelcomePage = () => {
         <h1 className='welcomeTitle'>Welcome to DoodleDo</h1>
         <p className='welcomeSubTitle'><strong>Stay organized and take control of your day! </strong></p>
         <p className='welcomeText'> Whether it's personal tasks, work projects, or long-term goals, this is your space to plan and achieve.</p>
-        <p className='welcomeText'>
+        <div className='welcomeText'>
           <ul>
             <li>
               <strong>Add Tasks:</strong> Easily create to-do items and never forget anything important.
@@ -20,7 +20,7 @@ const WelcomePage = () => {
             <strong>Celebrate Progress:</strong> Mark items as complete and see your accomplishments grow!
             </li>
           </ul>
-        </p>
+        </div>
         <p className='welcomeText'>Let's turn your plans into action 🚀!</p>
         <Link to='/register'><Button message={"Get started"}/></Link>
       </div>

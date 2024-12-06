@@ -1,32 +1,24 @@
-import {useState} from 'react';
+import {useState, useRef} from 'react';
 import { IoAdd } from "react-icons/io5";
 
 const ProjectForm = () => {
-    
-    const [inputValue, setInputValue] = useState('')
+    const formRef = useRef()
 
     const addProject=(inputValue)=>{
 
     }
-
-    const handleChange = (event)=>{
-        setInputValue(event.target.value)
-    }
     
     const handleSubmit = (event)=>{
         event.preventDefault()
-        if(inputValue !== ''){
-            addProject(inputValue)
-        }
-        setInputValue('')
     }
 
   return (
-    <form className='taskForm' onSubmit={(event)=>handleSubmit(event)}>
+    <form className='taskForm' onSubmit={(event) => handleSubmit(event)} ref={formRef}>
         <input type="text" 
-        className='taskInput' 
-        value={inputValue} placeholder='Add a new Task' 
-        onClick={(event)=>handleChange(event)} />
+        className='projectInput' 
+        placeholder='Add a project name' 
+        />
+        <textarea placeholder='Add a project description'/>
         <button type="submit" className='button'><IoAdd/>Add task</button>
     </form>
   )

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+// import React, { useEffect, useState } from 'react';
+// import axios from 'axios';
 
-export default function getData() {
-    console.log("TEST");
+// export default function getData() {
+//     console.log("TEST");
     
 //     const BASE_API_URL = "http://localhost:3000/api"
     
@@ -24,5 +24,5 @@ export default function getData() {
 //     }, []);
 
 //     if (loading) return <div>Loading...</div>;
-// 
-}
+
+// }

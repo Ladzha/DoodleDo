@@ -13,17 +13,6 @@ const Register = () => {
 
   const formRef = useRef()
 
-  const fetchData = async()=>{
-    console.log("fetchData"); 
-    try {
-        const response = await axios.get(`${BASE_API_URL}/${additionUrl}`)
-        setData(response.data)
-        console.log(data);  
-    } catch (error) {
-        console.log(error);
-    }
-}
-
   const handleSubmit = async (event)=>{
 
     event.preventDefault()
@@ -32,7 +21,6 @@ const Register = () => {
     const password = event.target.password.value
     console.log('Username: ', username, 'Email: ', email, 'Password: ', password);
 
-    fetchData()
   }
 
   return (
