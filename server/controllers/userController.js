@@ -1,5 +1,3 @@
-import { validationResult } from "express-validator";
-import dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import fs from "fs/promises";
 import authentication from "./authentication.js";
@@ -13,10 +11,8 @@ import LabelModel from "../models/labelModel.js";
 import dashboardController from '../controllers/dashboardController.js';
 
 
-dotenv.config()
-const SECRET_KEY = process.env.SECRET_KEY
-const { generateAccessToken, generateRefreshToken, authenticationToken, refreshAccessToken} = authentication
-const {getDashboard, createDashboard, deleteDashboard } = dashboardController
+const { generateAccessToken, generateRefreshToken} = authentication
+const { getDashboard, createDashboard } = dashboardController
 
 async function getAllUsers(req, res){
     try {     
@@ -25,6 +21,7 @@ async function getAllUsers(req, res){
             path: 'dashboard', 
             populate: {
                 path: 'categories', 
+                select: 'name'
             }
         });
         if(!users.length) return errorHandler(res, 404, "Users not found" )
@@ -152,7 +149,9 @@ async function login(req, res){
         let { email, password } = req.body
         if(!email || !password) return errorHandler(res, 400, "Invalid data")
         email = email.toLowerCase();
-        console.log("email =>", email, "password=>", password);
+
+        console.log("FROM SERVER email =>", email, "password=>", password);
+
         const userCandidate = await UserModel.findOne({ email })
         console.log("userCandidate=>", userCandidate);
         if(!userCandidate) return errorHandler(res, 400, `User with email ${email} doesn't exist`)
@@ -160,7 +159,10 @@ async function login(req, res){
         console.log("validPassword =>", validPassword);
         if(!validPassword) return errorHandler(res, 400, "Incorrect password")
         const accessToken = generateAccessToken(userCandidate._id, userCandidate.email)
-    
+        const refreshToken = generateRefreshToken(userCandidate._id, userCandidate.email)
+
+        res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: false }); 
+
         res.status(200).json({
             message: `Welcome ${userCandidate.username}`,
             accessToken: accessToken,
@@ -171,4 +173,22 @@ async function login(req, res){
     }
 }
 
-export default { createUser, updateUser, deleteUser, getAllUsers, getUserInfo, login }
+async function logout(req, res){
+    try {
+        res.status(200).json({
+            message: `You are logout`,
+        })        
+    } catch (error) {
+        errorHandler(res, 500, "Failed to logout")
+    }
+}
+
+async function protectedRoute(req, res){
+    try {
+        res.json({ message: 'Welcome to the protected route!' });
+    } catch (error) {
+        errorHandler(res, 500, "Failed to rich protected route")
+    }
+}
+
+export default { createUser, updateUser, deleteUser, getAllUsers, getUserInfo, login, logout, protectedRoute }

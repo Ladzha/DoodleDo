@@ -6,11 +6,13 @@ import Dashboard from './pages/Dashboard';
 import Error from './components/error/Error';
 import './App.css';
 import Layout from './components/Layout';
+import AuthContext, {AuthProvider} from './AuthContext';
 
 function App() {
 
   return (
     <>
+    <AuthProvider>
       <Routes>
         <Route path='/' element = {<Layout/>}>
           <Route index element = {<WelcomePage/>}/>
@@ -20,6 +22,7 @@ function App() {
           <Route path = '*' element = {<Error/>}/>
         </Route>
       </Routes>
+      </AuthProvider>
     </>
 
   )

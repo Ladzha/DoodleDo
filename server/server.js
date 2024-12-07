@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import errorHandlerMiddleWare from "./middleware/errorHandlerMiddleware.js";
 import dashboardRouter from "./routes/dashboardRoute.js"
@@ -14,14 +15,15 @@ import userRouter from "./routes/userRoute.js";
 
 
 dotenv.config();
-const PORT = process.env.PORT
-const MONGODB_URL = process.env.MONGODB_URL
-const { errorHandlerMid } = errorHandlerMiddleWare
+const PORT = process.env.PORT;
+const MONGODB_URL = process.env.MONGODB_URL;
+const { errorHandlerMid } = errorHandlerMiddleWare;
 
 const app = express();
-app.use(cors())
-app.use(express.json()) //Body parser middleware include in express. For row json
-app.use(express.urlencoded({extended: false })) //For urlencoded form data
+app.use(cors());
+app.use(cookieParser());
+app.use(express.json()); //Body parser middleware include in express. For row json
+app.use(express.urlencoded({extended: false })); //For urlencoded form data
 
 mongoose.connect(MONGODB_URL, {
     useNewUrlParser: true,

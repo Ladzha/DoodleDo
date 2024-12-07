@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import { dashboardService } from '../services/dashboard.service.js'
 
 export default function useFetch(additionUrl){
 
-    const BASE_API_URL = 'http://localhost:3000/api'
+    // const BASE_API_URL = 'http://localhost:3000/api'
 
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(true)
@@ -14,8 +15,10 @@ export default function useFetch(additionUrl){
         try {
             setError('')
             setLoading(true)
-            const response = await axios.get(`${BASE_API_URL}/${additionUrl}`)
-            setData(response.data)
+            const data = await dashboardService.getAllDashboards()
+
+            // const response = await axios.get(`${BASE_API_URL}/${additionUrl}`)
+            setData(data)
         } catch (error) {
             setError(error.message)
         }finally{

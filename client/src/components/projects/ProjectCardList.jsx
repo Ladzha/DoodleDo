@@ -2,7 +2,7 @@ import Loader from '../loader/Loader.jsx';
 import Error from '../error/Error.jsx';
 import ProjectCard from './ProjectCard.jsx'
 
-const ProjectCardList = ({loading, error}) => {
+const ProjectCardList = () => {
 
     const projects = [
     {

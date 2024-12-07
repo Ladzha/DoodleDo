@@ -2,33 +2,69 @@ import axios from 'axios';
 import {useState, useRef, useEffect} from 'react'
 import Button from '../element/Button';
 import Input from '../element/Input';
-
-const BASE_API_URL = 'http://localhost:3000/api'
-const additionUrl = 'users'
+import { authService } from '../../services/auth.service.js'
 
 const Register = () => {
 
-  const [message, setMessage] = useState('')
-  const [data, setData] = useState([])
-
-  const formRef = useRef()
+  const [usernameInput, setUsernameInput] = useState('')
+  const [emailInput, setEmailInput] = useState('')
+  const [passwordInput, setPasswordInput] = useState('')
 
   const handleSubmit = async (event)=>{
-
     event.preventDefault()
-    const username = event.target.username.value
-    const email = event.target.email.value
-    const password = event.target.password.value
-    console.log('Username: ', username, 'Email: ', email, 'Password: ', password);
+    console.log(usernameInput, emailInput, passwordInput) 
+    try {
+      await authService.register(usernameInput, emailInput, passwordInput)
+      setUsernameInput('')
+      setEmailInput('')
+      setPasswordInput('')
+    } catch (error) {
+      console.error('Registration failed:', err.message);
+    }  
+
 
   }
 
+
   return (
-    <form className='form' onSubmit={(event) => handleSubmit(event)} ref={formRef}>
-      <Input name='username' placeholder={"Enter username"}/>
-      <Input type='email' name='email' placeholder={"Enter email"}/>
-      <Input type='password' name='password' placeholder={"Enter password"}/>
-      <Button type='submit' message={"Register"}/>
+    <form className='form' onSubmit={(event) => handleSubmit(event)}>
+      <input
+        onChange={(event) => setUsernameInput(event.target.value)}
+        type='text' 
+        name='username' 
+        placeholder="Enter username" 
+        className='input'
+        value={usernameInput}
+        minLength={3}
+        maxLength={15}
+        required
+        />
+      <input
+        onChange={(event) => setEmailInput(event.target.value)}
+        type='email' 
+        name='email' 
+        placeholder="Enter email" 
+        className='input'
+        value={emailInput}
+        minLength={10}
+        maxLength={40}
+        pattern="^[^\s@]+@[^\s@]+\.[^\s@]+$"
+        title="Please enter a valid email address (e.g., user@example.com)"
+        required
+        />
+      <input 
+        onChange={(event) => setPasswordInput(event.target.value)}
+        type='password' 
+        name='password' 
+        placeholder="Enter password" 
+        className='input'
+        value={passwordInput}
+        minLength={6}
+        maxLength={20}
+        pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{6,20}"
+        title="Password must be 6-20 characters long, include at least one uppercase letter, one lowercase letter, one digit, and one special character (!@#$%^&*)."
+        required/>
+        <Button type='submit' message={"Register"}/>
     </form>
   )
 }

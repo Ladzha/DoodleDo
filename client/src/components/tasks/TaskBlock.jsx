@@ -1,10 +1,11 @@
 import TaskList from "./TaskList.jsx";
 import TaskForm from "./TaskForm.jsx";
 
-const TaskBlock = ({primer, loading, error}) => {
+const TaskBlock = () => {
+  
   return (
     <div className="taskBlockContainer">
-        <TaskList data={primer.categories} loading={loading} error={error}/>
+        <TaskList/>
         <TaskForm/>    
     </div>
   )
