@@ -1,29 +1,12 @@
+import {useState} from 'react';
 import Loader from '../loader/Loader.jsx';
 import Error from '../error/Error.jsx';
 import ProjectCard from './ProjectCard.jsx'
 
-const ProjectCardList = () => {
+const ProjectCardList = (dashboard) => {
 
-    const projects = [
-    {
-        "_id": "PROJECT_ID_MORNING_HABITS",
-        "name": "Morning habits",
-        "description": "Establish a productive morning routine.",
-        "isCompleted": false,
-        "deadline": "2024-12-30",
-        "tasks": [
-        {
-            "_id": "TASK_ID_MEDITATION",
-            "name": "Meditation",
-            "description": "Spend 10 minutes meditating every morning.",
-            "isCompleted": false,
-            "deadline": "2024-12-15",
-            "labels": ["With pleasure", "Daily"],
-            "comments": ["Use a meditation app for guidance."]
-        }
-        ]
-    }
-    ]
+    const [projects, setProjects] = useState(dashboard?.dashboard?.categories[1].projects)
+
     return (
         <section className='menuSection'>
         <h3 className='menuListName'>Projects</h3>

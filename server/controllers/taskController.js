@@ -4,6 +4,8 @@ import errorHandler from '../config/errorHandler.js'
 async function createTask(req, res){
     try {
         const taskData = req.body
+        console.log("taskData from server", taskData);
+        
         if(!taskData) return errorHandler(res, 400, "Invalid data")
         const newTask = await TaskModel.create(taskData)
         res.status(201).json({

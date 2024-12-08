@@ -1,5 +1,7 @@
-import CategoryModel from '../models/categoryModel.js'
-import errorHandler from '../config/errorHandler.js'
+import CategoryModel from '../models/categoryModel.js';
+import ProjectModel from '../models/projectModel.js';
+import TaskModel from '../models/taskModel.js';
+import errorHandler from '../config/errorHandler.js';
 
 async function createCategory(req, res){
     try {
@@ -36,13 +38,18 @@ async function deleteCategory(req, res){
     try {
         const categoryId = req.params.id
         if(!categoryId) return errorHandler(res, 400, "Invalid ID")
+        const categoryToDelete = await CategoryModel.findById(categoryId);    
+        if (categoryToDelete) {
+            await TaskModel.deleteMany({ categoryId: categoryToDelete._id });
+            await ProjectModel.deleteMany({ categoryId: categoryToDelete._id });
+        }
         await CategoryModel.findByIdAndDelete(categoryId)    
         res.status(200).json({
             message: `Category with ID: ${categoryId} successfully deleted.`})  
     } catch (error) {
         errorHandler(res, 400, "Failed to delete category")
     }
-}
+}  
 
 async function getAllCategories(req, res){
     try {       

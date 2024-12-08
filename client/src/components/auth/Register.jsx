@@ -1,28 +1,27 @@
-import axios from 'axios';
 import {useState, useRef, useEffect} from 'react'
+import { useNavigate } from "react-router";
 import Button from '../element/Button';
 import Input from '../element/Input';
 import { authService } from '../../services/auth.service.js'
 
 const Register = () => {
-
   const [usernameInput, setUsernameInput] = useState('')
   const [emailInput, setEmailInput] = useState('')
   const [passwordInput, setPasswordInput] = useState('')
+  const navigate = useNavigate()
 
   const handleSubmit = async (event)=>{
     event.preventDefault()
-    console.log(usernameInput, emailInput, passwordInput) 
     try {
       await authService.register(usernameInput, emailInput, passwordInput)
       setUsernameInput('')
       setEmailInput('')
       setPasswordInput('')
+      navigate('/login')
     } catch (error) {
-      console.error('Registration failed:', err.message);
+      setError(error.message || 'Registration failed');
+      console.log('Registration failed:', error.message);  
     }  
-
-
   }
 
 

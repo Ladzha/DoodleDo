@@ -1,12 +1,11 @@
 import ProjectCardList from "./ProjectCardList.jsx"
 import ProjectForm from "./ProjectForm.jsx"
 
-const ProjectBlock = ({primer, loading, error}) => {
+const ProjectBlock = (dashboard) => {
   return (
     <div className="projectBlock">
-        projectBlock
-        {/* <ProjectCardList data={primer.categories} loading={loading} error={error}/>
-        <ProjectForm/> */}
+        <ProjectCardList dashboard = {dashboard?.dashboard}/>
+        <ProjectForm dashboard = {dashboard?.dashboard}/>
     </div>
   )
 }

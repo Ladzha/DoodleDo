@@ -3,7 +3,12 @@ import Loader from '../loader/Loader.jsx';
 import Error from '../error/Error.jsx';
 import Task from './Task';
 
-const TaskList = ({loading, error}) => {
+const TaskList = (dashboard) => {
+
+  const [tasks, setTasks] = useState(dashboard?.dashboard?.categories[0].tasks)
+
+  console.log("TASK LIST=>", dashboard?.dashboard?.categories[0].tasks);
+  
 
   const handleDone=(taskId)=>{
     console.log('handleDone');
@@ -19,25 +24,6 @@ const TaskList = ({loading, error}) => {
     console.log('handleDelete');
 
   }
-
-  const tasks = [
-          {
-            "_id": "TASK_ID_EVENING_READING",
-            "name": "Evening reading",
-            "isCompleted": false,
-            "deadline": "2024-12-09",
-            "labels": ["With pleasure"],
-            "comments": []
-          },
-          {
-            "_id": "TASK_ID_PLAN_NEXT_DAY",
-            "name": "Plan next day",
-            "isCompleted": false,
-            "deadline": "2024-12-10",
-            "labels": [],
-            "comments": []
-          }
-        ]
 
   return (
         <section className='taskContainer'>

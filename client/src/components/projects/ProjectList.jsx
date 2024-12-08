@@ -31,7 +31,7 @@ const ProjectList = ({data, loading, error}) => {
         {/* {loading && <Loader/>}
         {error && <Error/>} */}
         {projects && projects.map((project)=>(
-          <p key={project._id}>lol</p>
+          <p key={project._id}>Some projects</p>
           // <ProjectName key={project._id} projectName={project.name}/>
         ))
         }

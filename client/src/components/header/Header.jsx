@@ -12,7 +12,7 @@ const toggleSideMenu =()=>{
       <Navbar/>
       {isLogin ? 
       <Link to = '/welcome'> <button type="button" className="button authButton">Logout</button></Link> :
-      <><Link to = '/register'> <button type="button" className="button authButton">Sign in</button></Link>
+      <><Link to = '/register'> <button type="button" className="button authButton">Register</button></Link>
       <Link to = '/login'> <button type="button" className="button authButton">Login</button></Link></>
       }
       

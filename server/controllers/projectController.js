@@ -1,5 +1,6 @@
-import ProjectModel from "../models/projectModel.js"
-import errorHandler from '../config/errorHandler.js'
+import ProjectModel from "../models/projectModel.js";
+import TaskModel from "../models/taskModel.js";
+import errorHandler from '../config/errorHandler.js';
 
 async function createProject(req, res){
     try {
@@ -37,6 +38,10 @@ async function deleteProject(req, res){
     try {
         const projectId = req.params.id
         if(!projectId) return errorHandler(res, 400, "Invalid ID")
+        const projectToDelete = await ProjectModel.findById(projectId)
+        if (projectToDelete) {
+            await TaskModel.deleteMany({ projectId: projectToDelete._id });
+        }
         await ProjectModel.findByIdAndDelete(projectId)    
         res.status(200).json({
             message: `Project with ID: ${projectId} successfully deleted.`})  

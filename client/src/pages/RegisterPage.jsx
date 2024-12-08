@@ -1,5 +1,6 @@
 import Register from "../components/auth/Register"
 const RegisterPage = () => {
+
   return (
     <section className="board">
         <div className="formContainer">

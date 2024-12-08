@@ -1,14 +1,18 @@
 import {useState, useEffect, useContext} from 'react';
+import { useNavigate } from "react-router";
 import Button from '../element/Button';
 import Input from '../element/Input';
 import { authService } from '../../services/auth.service.js'
-import AuthContext from '../../AuthContext.jsx';
+import AuthModule from '../../AuthContext.jsx';
 
 const Login = () => {
 
   const [emailInput, setEmailInput] = useState('')
   const [passwordInput, setPasswordInput] = useState('')
   const [error, setError] = useState('');
+  const navigate = useNavigate()
+
+  const { AuthContext , AuthProvider} = AuthModule
 
   const { login } = useContext(AuthContext)
 
@@ -19,8 +23,10 @@ const Login = () => {
       await login(emailInput, passwordInput)
       setEmailInput('')
       setPasswordInput('')
+      navigate('/dashboard')
     } catch (error) {
-      setError(err.message || 'Login failed');
+      setError(error.message || 'Login failed');
+      console.log('Login failed:', error.message);  
     }
   }
 

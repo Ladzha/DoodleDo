@@ -150,13 +150,11 @@ async function login(req, res){
         if(!email || !password) return errorHandler(res, 400, "Invalid data")
         email = email.toLowerCase();
 
-        console.log("FROM SERVER email =>", email, "password=>", password);
-
         const userCandidate = await UserModel.findOne({ email })
-        console.log("userCandidate=>", userCandidate);
+        
         if(!userCandidate) return errorHandler(res, 400, `User with email ${email} doesn't exist`)
         const validPassword = bcrypt.compareSync(password, userCandidate.password)
-        console.log("validPassword =>", validPassword);
+
         if(!validPassword) return errorHandler(res, 400, "Incorrect password")
         const accessToken = generateAccessToken(userCandidate._id, userCandidate.email)
         const refreshToken = generateRefreshToken(userCandidate._id, userCandidate.email)
@@ -165,6 +163,7 @@ async function login(req, res){
 
         res.status(200).json({
             message: `Welcome ${userCandidate.username}`,
+            userId: userCandidate._id,
             accessToken: accessToken,
             refreshToken: refreshToken
         })        

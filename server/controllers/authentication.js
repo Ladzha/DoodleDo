@@ -9,12 +9,12 @@ const REFRESH_SECRET_KEY = process.env.REFRESH_SECRET_KEY
 
 function generateAccessToken(userId, email){
     const payload = {userId, email}
-    return jsonwebtoken.sign(payload, ACCESS_SECRET_KEY, {expiresIn: "5m"})
+    return jsonwebtoken.sign(payload, ACCESS_SECRET_KEY, {expiresIn: "1h"})
 }
 
 function generateRefreshToken(userId, email){
     const payload = {userId, email}
-    return jsonwebtoken.sign(payload, REFRESH_SECRET_KEY, {expiresIn: "1h"})
+    return jsonwebtoken.sign(payload, REFRESH_SECRET_KEY, {expiresIn: "30h"})
 }
 
 function verifyToken(req, res, next){

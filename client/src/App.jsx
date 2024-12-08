@@ -6,10 +6,10 @@ import Dashboard from './pages/Dashboard';
 import Error from './components/error/Error';
 import './App.css';
 import Layout from './components/Layout';
-import AuthContext, {AuthProvider} from './AuthContext';
+import AuthModule from './AuthContext';
 
 function App() {
-
+  const { AuthContext , AuthProvider} = AuthModule
   return (
     <>
     <AuthProvider>

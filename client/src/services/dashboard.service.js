@@ -5,7 +5,7 @@ export const dashboardService = {
 
     async getAllDashboards() {
         try {
-            const res = await api.get(`/dashboards'`)
+            const res = await api.get(`/dashboards`)
             return res.data;
         } catch (error) {
             console.error('Error getting dashboards:', error.response?.data || error.message);
@@ -15,7 +15,7 @@ export const dashboardService = {
 
     async getDashboard(userId) {
         try {
-            const res = await api.get(`/dashboard${userId}'`)
+            const res = await api.get(`/dashboards/${userId}`)
             return res.data;
         } catch (error) {
             console.error('Error getting dashboard:', error.response?.data || error.message);
@@ -35,7 +35,7 @@ export const dashboardService = {
 
     async getAllProjects() {
         try {
-            const resp = await api.get('/projects')
+            const res = await api.get('/projects')
             return res.data;
         } catch (error) {
             console.error('Error getting project:', error.response?.data || error.message);
@@ -65,7 +65,7 @@ export const dashboardService = {
 
     async createCategory(newData) { 
         try {
-            const res = await axios.post('/categories', {newData}) 
+            const res = await api.post('/categories', {newData}) 
             return res.data;
         } catch (error) {
             console.error('Error creating category:', error.response?.data || error.message);
@@ -75,7 +75,7 @@ export const dashboardService = {
 
     async updateCategory(categoryId, newData) { 
         try {
-            const res = await axios.patch(`/categories/${categoryId}`, {newData}) 
+            const res = await api.patch(`/categories/${categoryId}`, {newData}) 
             return res.data;
         } catch (error) {
             console.error('Error updating category:', error.response?.data || error.message);
@@ -85,7 +85,7 @@ export const dashboardService = {
 
     async deleteCategory(categoryId) { 
         try {
-            const res = await axios.delete(`/categories/${categoryId}`) 
+            const res = await api.delete(`/categories/${categoryId}`) 
             return res.data;
         } catch (error) {
             console.error('Error deleting category:', error.response?.data || error.message);
@@ -95,7 +95,7 @@ export const dashboardService = {
     
     async createProject(newData) { 
         try {
-            const res = await axios.post('/projects', {newData}) 
+            const res = await api.post('/projects', {newData}) 
             return res.data;
         } catch (error) {
             console.error('Error creating project:', error.response?.data || error.message);
@@ -105,7 +105,7 @@ export const dashboardService = {
 
     async updateProject(projectId, newData) { 
         try {
-            const res = await axios.patch(`/projects/${projectId}`, {newData}) 
+            const res = await api.patch(`/projects/${projectId}`, {newData}) 
             return res.data;
         } catch (error) {
             console.error('Error updating project:', error.response?.data || error.message);
@@ -115,7 +115,7 @@ export const dashboardService = {
 
     async deleteProject(projectId) { 
         try {
-            const res = await axios.delete(`/projects/${projectId}`) 
+            const res = await api.delete(`/projects/${projectId}`) 
             return res.data;
         } catch (error) {
             console.error('Error deleting project:', error.response?.data || error.message);
@@ -125,14 +125,14 @@ export const dashboardService = {
 
     async createTask(newData) { 
         try {
-            const res = await axios.post('/tasks', {
+            console.log("newData", newData);
+            
+            const res = await api.post('/tasks', {
                 name: newData.name,
                 dashboardId: newData.dashboardId,
                 categoryId: newData.categoryId || null,
                 projectId: newData.projectId || null
             }) 
-            console.log(newData);
-            
             return res.data;
         } catch (error) {
             console.error('Error creating task:', error.response?.data || error.message);
@@ -142,7 +142,7 @@ export const dashboardService = {
 
     async updateTask(taskId, newData) { 
         try {
-            const res = await axios.patch(`/tasks/${taskId}`, {newData}) 
+            const res = await api.patch(`/tasks/${taskId}`, {newData}) 
             return res.data;
         } catch (error) {
             console.error('Error updating task:', error.response?.data || error.message);
@@ -152,7 +152,7 @@ export const dashboardService = {
 
     async deleteTask(taskId) { 
         try {
-            const res = await axios.delete(`/tasks/${taskId}`) 
+            const res = await api.delete(`/tasks/${taskId}`) 
             return res.data;
         } catch (error) {
             console.error('Error deleting task:', error.response?.data || error.message);
@@ -162,7 +162,7 @@ export const dashboardService = {
 
     async createLabel(newData) { 
         try {
-            const res = await axios.post('/labels', {newData}) 
+            const res = await api.post('/labels', {newData}) 
             return res.data;
         } catch (error) {
             console.error('Error creating label:', error.response?.data || error.message);
@@ -171,7 +171,7 @@ export const dashboardService = {
     },
     async updateLabel(labelId, newData) { 
         try {
-            const res = await axios.patch(`/labels/${labelId}`, {newData}) 
+            const res = await api.patch(`/labels/${labelId}`, {newData}) 
             return res.data;
         } catch (error) {
             console.error('Error updating label:', error.response?.data || error.message);
@@ -180,7 +180,7 @@ export const dashboardService = {
     },
     async deleteLabel(labelId) { 
         try {
-            const res = await axios.delete(`/labels/${labelId}`) 
+            const res = await api.delete(`/labels/${labelId}`) 
             return res.data;
         } catch (error) {
             console.error('Error deleting label:', error.response?.data || error.message);
