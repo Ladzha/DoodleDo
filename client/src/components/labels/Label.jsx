@@ -1,7 +1,7 @@
 
-const Label = ({labelName}) => {
+const Label = ({labelName, onClick}) => {
   return (
-    <p className='labelName'>{labelName}</p>
+    <button className='labelName' onClick={onClick}>{labelName}</button>
   )
 }
 

@@ -1,7 +1,7 @@
-const ProjectCard = ({projectName, projectDescription}) => {
+const ProjectCard = ({projectName, projectDescription, onDone, onEdit, onDelete}) => {
 
   return (
-    <div className='projectCard'>
+    <div className='projectCardElement'>
       <div className='projectName'> {projectName}</div>
       <div className='projectDescription'> {projectDescription}</div>
     </div>

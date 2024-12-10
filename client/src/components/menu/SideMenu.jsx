@@ -1,18 +1,33 @@
-import useFetch from '../../hooks/useFetch.js';
+import Loader from '../loader/Loader.jsx';
 import Search from '../element/Search.jsx'
 import CategoryList from '../categories/CategoryList.jsx'
 import ProjectList from '../projects/ProjectList.jsx'
 import LabelList from '../labels/LabelList.jsx'
-import primer from '../../api/defaultData.js';
 
-const SideMenu = () => {
-  const { data, loading, error } = useFetch("categories")  
+const SideMenu = ({
+  categories, 
+  projects, 
+  labels, 
+  onSelectCategory, 
+  onSelectProject, 
+  onSelectLabel}) => {
+
   return (
     <aside className='menuContainer'>
       <Search/>
-      <CategoryList categories={primer.categories} loading={loading} error={error}/>
-      <ProjectList data={primer.categories} loading={loading} error={error}/>
-      <LabelList data={primer.categories} loading={loading} error={error}/>
+      {categories.length > 0 ? 
+      <CategoryList 
+        categories={categories} 
+        onSelectCategory={onSelectCategory}/>
+        :<Loader/>}
+      {projects.length > 0  ? 
+      <ProjectList projects={projects} 
+        onSelectProject={onSelectProject}/>
+        :<Loader/>}
+      {labels.length > 0 ? 
+      <LabelList labels={labels} 
+      onSelectLabel={onSelectLabel}/>
+      :<Loader/>}
     </aside>
   )
 }

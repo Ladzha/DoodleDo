@@ -24,7 +24,7 @@ userRouter.route('/login')
 .post(login)
 
 userRouter.route('/logout')
-.get(logout)
+.post(logout)
 
 userRouter.route('/:id', authMiddleware)
 .get(getUserInfo)

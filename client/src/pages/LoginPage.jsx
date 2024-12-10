@@ -2,7 +2,7 @@ import Login from "../components/auth/Login"
 
 const LoginPage = () => {
   return (
-    <section className="board">
+    <section className="container">
         <div className="formContainer">
           <h2>Login</h2>
           <Login/> 

@@ -1,7 +1,7 @@
 import { MdDownloadDone } from "react-icons/md";
 import TaskButtonsBlock from './TaskButtonsBlock.jsx'
 
-const Task = ({ taskId, taskName, handleDone, handleEdit, handleDelete,}) => {
+const Task = ({ taskId, taskName, onDone, onEdit, onDelete,}) => {
   
   const handleComment=()=>{
     console.log('handleComment');
@@ -9,15 +9,15 @@ const Task = ({ taskId, taskName, handleDone, handleEdit, handleDelete,}) => {
   
   return (
     <div className='taskElement'>
-        <button type="button" className='taskButton' onClick={handleDone}><MdDownloadDone/></button>
-      <div className="taskText">
+        {/* <button type="button" className='taskButton' onClick={onDone}><MdDownloadDone/></button> */}
+      {/* <div className="taskText"> */}
         {taskName}
-      </div>
-        <TaskButtonsBlock 
+      {/* </div> */}
+        {/* <TaskButtonsBlock 
         taskId={taskId} 
-        handleEdit={handleEdit} 
-        handleDelete={handleDelete}
-        handleComment={handleComment}/>
+        onEdit={onEdit} 
+        onDelete={onDelete}
+        onComment={onComment}/> */}
     </div>
   )
 }

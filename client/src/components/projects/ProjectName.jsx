@@ -1,6 +1,6 @@
-const ProjectName = (projectName) => {
+const ProjectName = ({projectName, onClick}) => {
   return (
-    <div className='projectName'> {projectName}</div>
+    <button className='projectName' onClick={onClick}> {projectName}</button>
 )
 }
 

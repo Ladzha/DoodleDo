@@ -1,12 +1,13 @@
 import ProjectCardList from "./ProjectCardList.jsx"
 import ProjectForm from "./ProjectForm.jsx"
 
-const ProjectBlock = (dashboard) => {
+const ProjectBlock = ({projects, onCreateProject}) => {
+
   return (
-    <div className="projectBlock">
-        <ProjectCardList dashboard = {dashboard?.dashboard}/>
-        <ProjectForm dashboard = {dashboard?.dashboard}/>
-    </div>
+    <article className="blockContainer">
+        {projects.length > 0 ?<ProjectCardList projects={projects}/>:null}
+        <ProjectForm onCreateProject = {onCreateProject}/>
+    </article>
   )
 }
 

@@ -1,49 +1,35 @@
-import {useState} from 'react';
-import Loader from '../loader/Loader.jsx';
-import Error from '../error/Error.jsx';
 import Task from './Task';
 
-const TaskList = (dashboard) => {
-
-  const [tasks, setTasks] = useState(dashboard?.dashboard?.categories[0].tasks)
-
-  console.log("TASK LIST=>", dashboard?.dashboard?.categories[0].tasks);
-  
+const TaskList = ({tasks}) => {
 
   const handleDone=(taskId)=>{
-    console.log('handleDone');
-    
+    console.log('taskId from handleDone', taskId);
   }
 
   const handleEdit=(taskId)=>{
-    console.log('handleEdit');
-
+    console.log('taskId from handleEdit', taskId);
   }
 
   const handleDelete=(taskId)=>{
-    console.log('handleDelete');
-
+    console.log('taskId from handleDelete', taskId);
   }
 
   return (
-        <section className='taskContainer'>
-        <h3 className='menuListName'>Tasks</h3>
-        <article className='tasksWrapper'>
-          {/* {loading && <Loader/>}
-          {error && <Error/>} */}
-          {tasks && tasks.map((task) => (
-              <Task 
+    <div className='taskContainer'>
+      <h3 className='menuListName'>Tasks</h3>
+      <div className='tasksWrapper'>
+        {tasks && tasks.map((task) => (
+            <Task 
               key={task._id} 
               taskId={task._id}
               taskName={task.name}
-              handleDone={handleDone}
-              handleEdit={handleEdit}
-              handleDelete={handleDelete}
-              />
-            ))
-          }
-        </article>
-      </section>
+              onDone={handleDone}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />))
+        }
+      </div>
+    </div>
   )
 }
 

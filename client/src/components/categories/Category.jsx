@@ -1,6 +1,6 @@
-const Category = ({categoryName}) => {
+const Category = ({categoryName, onClick}) => {
   return (
-    <p className='categoryName'>{categoryName}</p>
+    <button className='categoryName' onClick={onClick}>{categoryName}</button>
   )
 }
 
