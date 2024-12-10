@@ -1,8 +1,11 @@
+import { useState } from "react"
 import { dashboardService } from "../services/dashboard.service"
 import TaskBlock from "./tasks/TaskBlock"
 import ProjectBlock from "./projects/ProjectBlock"
 
 const Workspace = ({projects, tasks, dashboardId, selectedCategoryId=1, selectedProjectId, selectedLabelId}) => {
+
+    const [error, setError] = useState('')
 
     const filteredProjects = selectedCategoryId 
     ? projects.filter((project) => project.categoryId===selectedCategoryId)
@@ -51,7 +54,7 @@ const Workspace = ({projects, tasks, dashboardId, selectedCategoryId=1, selected
 
             console.log("newProject => ", newProject);
             
-            // await dashboardService.createTask({
+            // await dashboardService.createProject({
             //     name: projectName, 
             //     description: projectDescription,
             //     dashboardId: dashboardId, 

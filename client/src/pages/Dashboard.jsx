@@ -6,13 +6,13 @@ import SideMenu from '../components/menu/SideMenu.jsx'
 import Workspace from '../components/Workspace.jsx'
 import AuthModule from '../AuthContext.jsx';
 
-const Dashboard = ({}) => {
+const Dashboard = () => {
     const { AuthContext , AuthProvider} = AuthModule  
 
     const [loading, setLoading] = useState('')
     const [error, setError] = useState('')
 
-    const [dashboard, setDashboard] = useState(null)
+    const [dashboardData, setDashboardData] = useState(null)
     const [categories, setCategories] = useState([
       {_id: 1, name: "category1"}, 
       {_id: 2, name: "category2"}])
@@ -21,15 +21,15 @@ const Dashboard = ({}) => {
       {_id: 2, name: "project2", categoryId: 2},
       {_id: 3, name: "project3", categoryId: 3}])
     const [tasks, setTasks] = useState([
-      {_id: 1, name: "task1", categoryId: 2, projectId:1}, 
+      {_id: 1, name: "task1", categoryId: 2, projectId:1, comment: "comment1"}, 
       {_id: 2, name: "task2", categoryId: 2, projectId: 1},
       {_id: 3, name: "task3", categoryId: 2, projectId: 2},
-      {_id: 4, name: "task4", categoryId: 2, projectId: 2},
+      {_id: 4, name: "task4", categoryId: 2, projectId: 2, comment: "comment2"},
       {_id: 5, name: "task5", categoryId: 1, projectId: 1},
       {_id: 6, name: "task6", categoryId: 1, projectId: 1},
-      {_id: 7, name: "task7", categoryId: 1, projectId: 2},
+      {_id: 7, name: "task7", categoryId: 1, projectId: 2, comment: "comment3"},
       {_id: 8, name: "task8", categoryId: 1, projectId: 3},
-      {_id: 9, name: "task9", categoryId: 1, projectId: 3}
+      {_id: 9, name: "task9", categoryId: 1, projectId: 3, comment: "comment4"}
     ])
     const [labels, setLabels] = useState([{_id: 1, name: "label1"}, {_id: 2, name: "label2"}])
 
@@ -63,7 +63,7 @@ const Dashboard = ({}) => {
             setLoading(true)
             const dashboardData = await dashboardService.getDashboard(userId)
             if(dashboardData){
-              setDashboard(dashboardData)
+              setDashboardData(dashboardData)
               if(dashboardData._id){
                 dashboardId.current = dashboardData._id
               }
@@ -77,9 +77,16 @@ const Dashboard = ({}) => {
 
     useEffect(()=>{
       if(userId){
-        fetchData()
+        fetchData()        
       }
     }, [userId])
+
+    useEffect(()=>{
+        console.log("dashboardData =>", dashboardData);
+        // console.log("dashboardData categories =>", dashboardData.categories);
+
+    }, [])
+
     
   return (
     <main className='container'>   

@@ -1,17 +1,40 @@
+import {useState} from 'react'
 import Task from './Task';
+import { dashboardService } from '../../services/dashboard.service';
 
 const TaskList = ({tasks}) => {
 
-  const handleDone=(taskId)=>{
-    console.log('taskId from handleDone', taskId);
+  const [error, setError] = useState('')
+
+  const handleTaskDone= async (taskId)=>{
+    try {
+      console.log("handleTaskDone => ", taskId);
+      // await dashboardService.updateTask(taskId, {isCompleted:true})
+    } catch (error) {
+        setError(error.message || 'Failed to update task')
+        console.log('Failed to update task:', error.message)
+    }
   }
 
-  const handleEdit=(taskId)=>{
-    console.log('taskId from handleEdit', taskId);
-  }
+  const handleEditTask = async (taskId)=>{
+    try {
+        const newData = 'test'
+        console.log("handleEditTask => ", taskId, 'NewData =>', newData);
+        // await dashboardService.updateTask(taskId, newData)
+    } catch (error) {
+        setError(error.message || 'Failed to update task')
+        console.log('Failed to update task:', error.message)
+    }
+}
 
-  const handleDelete=(taskId)=>{
-    console.log('taskId from handleDelete', taskId);
+  const handleDeleteTask = async (taskId)=>{
+      try {
+          console.log("handleDeleteTask  => ", taskId);
+          // await dashboardService.deleteTask(taskId)
+      } catch (error) {
+          setError(error.message || 'Failed to delete task')
+          console.log('Failed to delete task:', error.message)
+      }
   }
 
   return (
@@ -23,9 +46,10 @@ const TaskList = ({tasks}) => {
               key={task._id} 
               taskId={task._id}
               taskName={task.name}
-              onDone={handleDone}
-              onEdit={handleEdit}
-              onDelete={handleDelete}
+              taskComment={task.comment || null}
+              onDone={handleTaskDone}
+              onEdit={handleEditTask}
+              onDelete={handleDeleteTask}
             />))
         }
       </div>
