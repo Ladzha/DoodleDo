@@ -30,7 +30,7 @@ const TaskList = ({tasks}) => {
   const handleDeleteTask = async (taskId)=>{
       try {
           console.log("handleDeleteTask  => ", taskId);
-          // await dashboardService.deleteTask(taskId)
+          await dashboardService.deleteTask(taskId)
       } catch (error) {
           setError(error.message || 'Failed to delete task')
           console.log('Failed to delete task:', error.message)

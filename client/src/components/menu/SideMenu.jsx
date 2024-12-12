@@ -39,7 +39,6 @@ const SideMenu = ({
   return (
     <aside className='menuContainer'>
       <Search/> 
-      <button type="button">❤️</button>
       {categories.length > 0 ? 
       <CategoryBlock 
         categories={categories}

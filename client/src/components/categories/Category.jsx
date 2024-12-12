@@ -1,7 +1,12 @@
-const Category = ({categoryName, onClick}) => {
+import CategoryButtonBlock from "./CategoryButtonBlock.jsx"
+
+const Category = ({categoryName, onClick, onEdit, onDelete}) => {
   
   return (
-    <button className='categoryName' onClick={onClick}>{categoryName}</button>
+    <div className='categoryElement'>
+        <button className='categoryName' onClick={onClick}>{categoryName}</button>
+        <CategoryButtonBlock onEdit={onEdit} onDelete={onDelete}/>
+    </div>
   )
 }
 

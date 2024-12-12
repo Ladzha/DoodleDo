@@ -5,11 +5,18 @@ const dashboardSchema = new mongoose.Schema({
         type: mongoose.SchemaTypes.ObjectId,
         ref: "User", 
         required: [true, "Please add user ID"]
-    },
-    categories: {
-        type: [ mongoose.SchemaTypes.ObjectId ],
-        ref: "Category", 
-    },
+    }
+},{
+    timestamps: false,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
 })
+
+dashboardSchema.virtual('categories', {
+    ref: "Category",
+    localField: "_id",
+    foreignField: "dashboardId",
+    justOne: false
+});
 
 export default mongoose.model("Dashboard", dashboardSchema)

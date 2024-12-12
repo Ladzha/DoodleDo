@@ -1,4 +1,4 @@
-import {useState, useEffect, useCallback, useContext, useRef} from 'react'
+import {useState, useEffect, useLayoutEffect, useCallback, useContext, useRef} from 'react'
 import { dashboardService } from '../services/dashboard.service.js'
 import Error from '../components/error/Error.jsx'
 import Loader from '../components/loader/Loader.jsx'
@@ -38,10 +38,10 @@ const Dashboard = () => {
     const [selectedLabelId, setSelectedLabelId] = useState(null)
 
     // const { userId } = useContext(AuthContext)
-    const userId = "6755e70d4f0ad33d30862c20"
+    const userId = "675ae0bdac66f0ba1cea91b1"
     const dashboardId = useRef(null)
 
-    console.log("userId from login fom Dashboard", userId);
+    // console.log("userId from login fom Dashboard", userId);
 
     const handleSelectCategory=(categoryId)=>{
       setSelectedCategoryId(categoryId)
@@ -64,28 +64,37 @@ const Dashboard = () => {
             const dashboardData = await dashboardService.getDashboard(userId)
             if(dashboardData){
               setDashboardData(dashboardData)
+              setCategories(dashboardData.categories)
               if(dashboardData._id){
                 dashboardId.current = dashboardData._id
+                console.log("dashboardData =>", dashboardData);
+                const categoriesData = await dashboardService.getAllCategories()
+                console.log("categoriesData =>", categoriesData);
               }
             }
         } catch (error) {
             setError(error.message || 'Failed to fetch dashboard')
         }finally{
-            setLoading(false)            
+          console.log('I am fetching data');
+          setLoading(false)            
         }
     }, [userId])
 
-    useEffect(()=>{
+    useLayoutEffect(()=>{
       if(userId){
         fetchData()        
       }
-    }, [userId])
+    }, [])
 
     useEffect(()=>{
         console.log("dashboardData =>", dashboardData);
-        // console.log("dashboardData categories =>", dashboardData.categories);
-
+        console.log("dashboardData categories =>", categories);
+        console.log("dashboardData categories =>", categories[0].name);
     }, [])
+
+    if(!dashboardData){
+      return <Loader/>
+    }
 
     
   return (

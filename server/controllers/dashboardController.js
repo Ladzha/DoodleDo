@@ -9,18 +9,19 @@ async function getAllDashboards(req, res){
     try {       
         const dashboards = await DashboardModel.find()
         .populate({
-            path: "categories", 
-                populate: [{
+            path: "categories",
+            populate: [{
                     path: 'projects',
                     populate: {
                         path: 'tasks',
                         populate: {
                             path: "labels"
                         }}},{
-                        path: 'tasks',
-                        populate:{
-                            path: "labels"
-                    }}]})
+                    path: 'tasks',
+                    populate: {
+                        path: "labels"
+                    }}]});
+
         if(!dashboards.length) return errorHandler(res, 404, "Dashboards not found" )
         res.status(200).json(dashboards)        
     } catch (error) {
@@ -43,10 +44,10 @@ async function getDashboard(req, res){
                         populate: {
                             path: "labels"
                         }}},{
-                        path: 'tasks',
-                        populate:{
-                            path: "labels"
-                    }}]})
+                    path: 'tasks',
+                    populate:{
+                        path: "labels"
+                }}]})
         if (!dashboard) {
             return errorHandler(res, 404, "Dashboard not found");
         }
@@ -58,7 +59,7 @@ async function getDashboard(req, res){
 
 async function createDashboard(userId, template){
     try {
-        const newDashboard = await DashboardModel.create({userId : userId, categories: []})
+        const newDashboard = await DashboardModel.create({userId : userId})
 
         for(const category of template.categories){            
             const newCategory = await CategoryModel.create({
@@ -119,8 +120,6 @@ async function createDashboard(userId, template){
                                 projectId: newProject._id
                     })}}
             }}
-            newDashboard.categories.push(newCategory)
-            await newDashboard.save()
         }
         return newDashboard
     } catch (error) {

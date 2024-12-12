@@ -31,7 +31,7 @@ const ProjectCardList = ({projects}) => {
     const handleDeleteProject = async (projectId)=>{
         try {
             console.log("handleDeleteProject => ", projectId);
-            // await dashboardService.deleteProject(projectId)
+            await dashboardService.deleteProject(projectId)
         } catch (error) {
             setError(error.message || 'Failed to delete project')
             console.log('Failed to delete project:', error.message)
