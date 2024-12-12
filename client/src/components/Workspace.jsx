@@ -23,21 +23,22 @@ const Workspace = ({projects, tasks, dashboardId, selectedCategoryId=1, selected
     
     const handleCreateTask = async (taskName)=>{
         try {
-            const newTask = {
-                name: taskName, 
-                dashboardId: dashboardId, 
-                categoryId: selectedCategoryId || 1, 
-                projectId: selectedProjectId || null}
-            
-            console.log("newTask => ", newTask);
-
-            // await dashboardService.createTask({
-            //     name: taskName, 
-            //     dashboardId: dashboardId, 
-            //     categoryId: selectedCategoryId, 
-            //     projectId: selectedProjectId || null
-            // })
-            
+            if(taskName){
+                const newTask = {
+                    name: taskName, 
+                    dashboardId: dashboardId, 
+                    categoryId: selectedCategoryId || '6755e70d4f0ad33d30862c24', 
+                    projectId: selectedProjectId || null}
+                
+                console.log("newTask => ", newTask);
+    
+                await dashboardService.createTask({
+                    name: taskName, 
+                    dashboardId: dashboardId, 
+                    categoryId: selectedCategoryId, 
+                    projectId: selectedProjectId || null
+                })
+            }
         }catch (error) {
             setError(error.message || 'Task creation failed')
             console.log('Task creation failed:', error.message)
@@ -46,20 +47,21 @@ const Workspace = ({projects, tasks, dashboardId, selectedCategoryId=1, selected
 
     const handleCreateProject = async (projectName, projectDescription)=>{
         try {
-            const newProject = {
-                name: projectName, 
-                description: projectDescription,
-                dashboardId: dashboardId, 
-                categoryId: selectedCategoryId || 1}
-
-            console.log("newProject => ", newProject);
-            
-            // await dashboardService.createProject({
-            //     name: projectName, 
-            //     description: projectDescription,
-            //     dashboardId: dashboardId, 
-            //     categoryId: selectedCategoryId})
-
+            if(projectName){
+                const newProject = {
+                    name: projectName, 
+                    description: projectDescription || null, 
+                    dashboardId: dashboardId, 
+                    categoryId: selectedCategoryId || 1}
+    
+                console.log("newProject => ", newProject);
+                
+                await dashboardService.createProject({
+                    name: projectName, 
+                    description: projectDescription,
+                    dashboardId: dashboardId, 
+                    categoryId: selectedCategoryId})
+            }
         } catch (error) {
             setError(error.message || 'Project creation failed')
             console.log('Project creation failed:', error.message)

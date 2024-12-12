@@ -8,6 +8,7 @@ const TaskForm = ({onCreateTask}) => {
     const handleSubmit = (event)=>{
         event.preventDefault()
         onCreateTask(taskName)
+        setTaskName('')
     }
     
     return (
@@ -24,7 +25,6 @@ const TaskForm = ({onCreateTask}) => {
             <button type="submit" className='button'><IoAdd/>Add task</button>
         </form>
     </div>
-
     )
 }
     

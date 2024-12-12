@@ -9,7 +9,9 @@ const ProjectForm = ({onCreateProject}) => {
   const handleSubmit = (event)=>{
     event.preventDefault()
     onCreateProject(projectName, projectDescription)
-}
+    setProjectName('')
+    setProjectDescription('')
+  }
   return (
     <form className='projectForm' onSubmit={(event) => handleSubmit(event)}>
         <input 

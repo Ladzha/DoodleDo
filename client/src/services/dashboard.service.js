@@ -65,7 +65,10 @@ export const dashboardService = {
 
     async createCategory(newData) { 
         try {
-            const res = await api.post('/categories', {newData}) 
+            const res = await api.post('/categories', {
+                name: newData.name,
+                dashboardId: newData.dashboardId,
+            }) 
             return res.data;
         } catch (error) {
             console.error('Error creating category:', error.response?.data || error.message);
@@ -95,7 +98,12 @@ export const dashboardService = {
     
     async createProject(newData) { 
         try {
-            const res = await api.post('/projects', {newData}) 
+            const res = await api.post('/projects', {
+                name: newData.name,
+                dashboardId: newData.dashboardId,
+                description: newData.description,
+                categoryId: newData.categoryId,
+            }) 
             return res.data;
         } catch (error) {
             console.error('Error creating project:', error.response?.data || error.message);
@@ -162,7 +170,12 @@ export const dashboardService = {
 
     async createLabel(newData) { 
         try {
-            const res = await api.post('/labels', {newData}) 
+            const res = await api.post('/labels', {
+                name: newData.name,
+                dashboardId: newData.dashboardId,
+                projectId: newData.categoryId || null,
+                taskId: newData.projectId || null
+            }) 
             return res.data;
         } catch (error) {
             console.error('Error creating label:', error.response?.data || error.message);

@@ -1,10 +1,13 @@
+import { useState } from 'react';
+import { dashboardService } from '../../services/dashboard.service.js';
 import Loader from '../loader/Loader.jsx';
-import Search from '../element/Search.jsx'
-import CategoryList from '../categories/CategoryList.jsx'
-import ProjectList from '../projects/ProjectList.jsx'
-import LabelList from '../labels/LabelList.jsx'
+import Search from '../element/Search.jsx';
+import ProjectList from '../projects/ProjectList.jsx';
+import LabelList from '../labels/LabelList.jsx';
+import CategoryBlock from '../categories/CategoryBlock.jsx';
 
 const SideMenu = ({
+  dashboardId,
   categories, 
   projects, 
   labels, 
@@ -12,12 +15,35 @@ const SideMenu = ({
   onSelectProject, 
   onSelectLabel}) => {
 
+    const [error, setError] = useState('')
+
+    const handleCreateCategory = async (categoryName)=>{
+      try {
+        if(categoryName){
+          const newCategory = {
+            name: categoryName, 
+            dashboardId: dashboardId}
+
+        console.log("newCategory => ", newCategory);
+        
+        await dashboardService.createCategory({
+            name: categoryName, 
+            dashboardId: dashboardId})
+        }
+      } catch (error) {
+          setError(error.message || 'Category creation failed')
+          console.log('Category creation failed:', error.message)
+      }
+  }
+
   return (
     <aside className='menuContainer'>
-      <Search/>
+      <Search/> 
+      <button type="button">❤️</button>
       {categories.length > 0 ? 
-      <CategoryList 
-        categories={categories} 
+      <CategoryBlock 
+        categories={categories}
+        onCreateCategory={handleCreateCategory}
         onSelectCategory={onSelectCategory}/>
         :<Loader/>}
       {projects.length > 0  ? 
